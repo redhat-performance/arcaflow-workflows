@@ -70,18 +70,18 @@ subgraph input
 input.user
 input.cluster_name
 input.run_id
-subgraph sysbench
-input.sysbench_threads
-input.sysbench_events
-input.sysbench_runtime
-input.sysbench_cpumaxprime
-end
 subgraph elastic
 input.elastic_password
 input.elastic_index_sysbench
 input.elastic_index_pcp 
 input.elastic_username
 input.elastic_host
+end
+subgraph sysbench
+input.sysbench_threads
+input.sysbench_events
+input.sysbench_runtime
+input.sysbench_cpumaxprime
 end
 subgraph pcp
 input.pmlogger_interval
