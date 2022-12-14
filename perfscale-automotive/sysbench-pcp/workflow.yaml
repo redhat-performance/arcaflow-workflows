@@ -76,9 +76,15 @@ input:
             name: elasticsearch password
           type:
             type_id: string
-        elastic_index:
+        elastic_index_sysbench:
           display:
-            description: The index for the ElasticSearch service
+            description: The index for the ElasticSearch service for sysbench
+            name: elasticsearch index
+          type:
+            type_id: string
+        elastic_index_pcp:
+          display:
+            description: The index for the ElasticSearch service for pcp
             name: elasticsearch index
           type:
             type_id: string
@@ -86,6 +92,9 @@ steps:
   uuidgen:
     plugin: quay.io/arcalot/arcaflow-plugin-utilities:latest
     step: uuid
+    input: {}
+  system_config:
+    plugin: quay.io/arcalot/arcaflow-plugin-metadata:0.1.0
     input: {}
   pcp:
     plugin: quay.io/arcalot/arcaflow-plugin-pcp:0.1.1
@@ -101,30 +110,41 @@ steps:
       events: !expr $.input.sysbench_events
       cpu-max-prime: !expr $.input.sysbench_cpumaxprime
       time: !expr $.input.sysbench_runtime
-  system_config:
-    plugin: quay.io/arcalot/arcaflow-plugin-metadata:0.1.0
-    input: {}
-  elasticsearch:
+  elasticsearch_sysbench:
     plugin: quay.io/arcalot/arcaflow-plugin-opensearch:opensearch_597335c
     input:
       url: !expr $.input.elastic_host
       username: !expr $.input.elastic_username
       password: !expr $.input.elastic_password
-      index: !expr $.input.elastic_index
+      index: !expr $.input.elastic_index_sysbench
       data:
         uuid: !expr $.steps.uuidgen.outputs.success.uuid
         run_id: !expr $.input.run_id
         user: !expr $.input.user
         cluster_name: !expr $.input.cluster_name
-        pcp: !expr $.steps.pcp.outputs.success
-        sysbench: !expr $.steps.sysbench.outputs.success
         system_config: !expr $.steps.system_config.outputs.success
+        sysbench: !expr $.steps.sysbench.outputs.success
+  elasticsearch_pcp:
+    plugin: quay.io/arcalot/arcaflow-plugin-opensearch:opensearch_597335c
+    input:
+      url: !expr $.input.elastic_host
+      username: !expr $.input.elastic_username
+      password: !expr $.input.elastic_password
+      index: !expr $.input.elastic_index_pcp
+      data:
+        uuid: !expr $.steps.uuidgen.outputs.success.uuid
+        run_id: !expr $.input.run_id
+        user: !expr $.input.user
+        cluster_name: !expr $.input.cluster_name
+        system_config: !expr $.steps.system_config.outputs.success
+        pcp: !expr $.steps.pcp.outputs.success
 output:
   uuid: !expr $.steps.uuidgen.outputs.success.uuid
   run_id: !expr $.input.run_id
   user: !expr $.input.user
   cluster_name: !expr $.input.cluster_name
+  system_config: !expr $.steps.system_config.outputs.success
   pcp: !expr $.steps.pcp.outputs.success
   sysbench: !expr $.steps.sysbench.outputs.success
-  system_config: !expr $.steps.system_config.outputs.success
-  elasticsearch: !expr $.steps.elasticsearch.outputs.success
+  elasticsearch_sysbench: !expr $.steps.elasticsearch_sysbench.outputs.success
+  elasticsearch_pcp: !expr $.steps.elasticsearch_pcp.outputs.success
