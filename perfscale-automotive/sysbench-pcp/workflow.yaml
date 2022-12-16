@@ -97,7 +97,7 @@ steps:
     plugin: quay.io/arcalot/arcaflow-plugin-metadata:0.1.0
     input: {}
   pcp:
-    plugin: quay.io/arcalot/arcaflow-plugin-pcp:schema-update_39da584
+    plugin: quay.io/arcalot/arcaflow-plugin-pcp:0.2.0
     step: start-pcp
     input:
       pmlogger_interval: !expr $.input.pmlogger_interval
