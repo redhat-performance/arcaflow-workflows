@@ -111,7 +111,7 @@ steps:
       cpu-max-prime: !expr $.input.sysbench_cpumaxprime
       time: !expr $.input.sysbench_runtime
   elasticsearch_sysbench:
-    plugin: quay.io/arcalot/arcaflow-plugin-opensearch:opensearch_597335c
+    plugin: quay.io/arcalot/arcaflow-plugin-opensearch:0.1.0
     input:
       url: !expr $.input.elastic_host
       username: !expr $.input.elastic_username
@@ -125,7 +125,7 @@ steps:
         system_config: !expr $.steps.system_config.outputs.success
         sysbench: !expr $.steps.sysbench.outputs.success
   elasticsearch_pcp:
-    plugin: quay.io/arcalot/arcaflow-plugin-opensearch:opensearch_597335c
+    plugin: quay.io/arcalot/arcaflow-plugin-opensearch:0.1.0
     input:
       url: !expr $.input.elastic_host
       username: !expr $.input.elastic_username
