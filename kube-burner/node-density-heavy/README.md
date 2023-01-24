@@ -30,7 +30,8 @@ $ git clone https://github.com/arcalot/arcaflow-engine.git
 
 Clone this workflows repo, and set this directory to your workflow working directory (adjust as needed):
 ```
-$ git clone https://github.com/arcalot/arcaflow-workflows.git
+$ git clone https://github.com/redhat-performance/arcaflow-workflows.git
+  Modify arcaflow-workflows/kube-burner/node-density-heavy/input-example.yaml with the kubeconfig string of your openshift cluster
 $ export WFPATH=$(pwd)/arcaflow-workflows/kube-burner/node-density-heavy
 ```
  
@@ -44,4 +45,25 @@ $ go run cmd/arcaflow/main.go -input ${WFPATH}/input-example.yaml \
 ## Workflow Diagram
 This diagram shows the complete end-to-end workflow logic.
 
-
+```mermaid
+flowchart LR
+input.kubeburner_loglevel-->steps.kubeburner
+input.kubeburner_es_index-->steps.kubeburner
+input.kubeburner_burst-->steps.kubeburner
+input.kubeburner_pod_ready_threshold-->steps.kubeburner
+input.kubeburner_qps-->steps.kubeburner
+input.kubeconfig_str-->steps.kubeburner
+input.kubeburner_es_server-->steps.kubeburner
+input.kubeburner_timeout-->steps.kubeburner
+steps.uuidgen.outputs.success-->steps.kubeburner
+steps.uuidgen.outputs.success-->output
+steps.kubeburner.outputs.success-->output
+steps.metadata-->steps.metadata.outputs.success
+steps.metadata-->steps.metadata.outputs.error
+input.kubeburner_pods_per_node-->steps.kubeburner
+steps.uuidgen-->steps.uuidgen.outputs.success
+steps.uuidgen-->steps.uuidgen.outputs.error
+steps.kubeburner-->steps.kubeburner.outputs.error
+steps.kubeburner-->steps.kubeburner.outputs.success
+steps.metadata.outputs.success-->output
+```

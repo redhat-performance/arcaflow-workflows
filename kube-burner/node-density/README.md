@@ -30,7 +30,8 @@ $ git clone https://github.com/arcalot/arcaflow-engine.git
 
 Clone this workflows repo, and set this directory to your workflow working directory (adjust as needed):
 ```
-$ git clone https://github.com/arcalot/arcaflow-workflows.git
+$ git clone https://github.com/redhat-performance/arcaflow-workflows.git
+  Modify arcaflow-workflows/kube-burner/node-density/input-example.yaml with the kubeconfig string of your openshift cluster
 $ export WFPATH=$(pwd)/arcaflow-workflows/kube-burner/node-density
 ```
  
@@ -45,7 +46,7 @@ $ go run cmd/arcaflow/main.go -input ${WFPATH}/input-example.yaml \
 This diagram shows the complete end-to-end workflow logic.
 
 ```mermaid
-flowchart TD
+flowchart LR
 input.kubeburner_loglevel-->steps.kubeburner
 input.kubeburner_es_index-->steps.kubeburner
 input.kubeburner_burst-->steps.kubeburner
