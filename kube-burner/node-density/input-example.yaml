@@ -8,3 +8,10 @@ kubeburner_loglevel: 'info'
 kubeburner_pods_per_node: 80
 kubeburner_timeout: '25m'
 kubeburner_pod_ready_threshold: '30s'
+kubeconfig: |
+  apiVersion: v1
+  clusters:
+  - cluster:
+      certificate-authority-data: LS0tLS1CR...
+      server: https://api.dummycluster.openshift.com:6443
+    name: api-dummycluster-openshift-com:6443

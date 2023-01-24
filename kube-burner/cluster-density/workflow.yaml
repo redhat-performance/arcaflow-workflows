@@ -46,6 +46,12 @@ input:
             name: timeout
           type:
             type_id: string
+        kubeconfig_str:
+          display:
+            description: Openshift cluster kubeconfig file content as a string
+            name: kubeconfig
+          type:
+            type_id: string
 
 
 steps:
@@ -54,7 +60,7 @@ steps:
     step: uuid
     input: {}
   kubeburner:
-    plugin: quay.io/harshithumesh/arcaflow-plugin-kube-burner-test:latest
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
     step: kube-burner
     input:
       workload: cluster-density
@@ -66,6 +72,7 @@ steps:
       log_level: !expr $.input.kubeburner_loglevel
       iterations: !expr $.input.kubeburner_iterations
       timeout: !expr $.input.kubeburner_timeout
+      kubeconfig: !expr $.input.kubeconfig_str
   metadata:
     plugin: quay.io/arcalot/arcaflow-plugin-metadata:latest
     input: {}

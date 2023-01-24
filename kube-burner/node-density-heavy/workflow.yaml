@@ -52,6 +52,12 @@ input:
             name: pod-ready-threshold
           type:
             type_id: string
+        kubeconfig_str:
+          display:
+            description: Openshift cluster kubeconfig file content as a string
+            name: kubeconfig
+          type:
+            type_id: string
 
 steps:
   uuidgen:
@@ -59,7 +65,7 @@ steps:
     step: uuid
     input: {}
   kubeburner:
-    plugin: quay.io/harshithumesh/arcaflow-plugin-kube-burner-test:latest
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
     step: kube-burner
     input:
       workload: node-density-heavy
@@ -72,6 +78,7 @@ steps:
       pods_per_node: !expr $.input.kubeburner_pods_per_node
       timeout: !expr $.input.kubeburner_timeout
       pod_ready_threshold: !expr $.input.kubeburner_pod_ready_threshold
+      kubeconfig: !expr $.input.kubeconfig_str
   metadata:
     plugin: quay.io/arcalot/arcaflow-plugin-metadata:latest
     input: {}
