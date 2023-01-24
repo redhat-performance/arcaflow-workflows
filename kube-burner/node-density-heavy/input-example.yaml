@@ -8,7 +8,7 @@ kubeburner_loglevel: 'info'
 kubeburner_pods_per_node: 80
 kubeburner_timeout: '25m'
 kubeburner_pod_ready_threshold: '30s'
-kubeconfig: |
+kubeconfig_str: |
   apiVersion: v1
   clusters:
   - cluster:

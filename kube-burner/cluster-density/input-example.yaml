@@ -7,7 +7,7 @@ kubeburner_burst: 20
 kubeburner_loglevel: 'info'
 kubeburner_iterations: 2
 kubeburner_timeout: '25m'
-kubeconfig: |
+kubeconfig_str: |
   apiVersion: v1
   clusters:
   - cluster:
