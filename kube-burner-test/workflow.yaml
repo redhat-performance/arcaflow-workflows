@@ -38,21 +38,26 @@ input:
             type_id: integer
           default: 245
           required: false
-        kb_timeout_minutes:
+        kb_timeout:
           display:
-            description: The timeout for kube-burner in minutes
+            description: The timeout for kube-burner in s, m, or h
           type:
-            #TODO -- Add the correct syntax for units interpretation
-            type_id: integer
-          default: 120
+            type_id: string
+          default: '2h'
           required: false
         kb_log_level:
           display:
             description: The log level for kube-burner
           type:
-            #TODO -- Make this an enum
-            type_id: string
+            type_id: enum_string
           default: 'info'
+          values:
+            info:
+              name: Info log level
+            debug:
+              name: Debug log level
+            error:
+              name: Error log level
           required: false
         kb_cd_iterations:
           display:
@@ -70,17 +75,15 @@ input:
           required: false
         kb_cd_churn_delay:
           display:
-            description: Churn delay for kube-burner cluster-density tests
+            description: Churn delay for kube-burner cluster-density tests in m
           type:
-            #TODO -- Convert to units
             type_id: string
           default: '2m'
           required: false
         kb_cd_churn_duration:
           display:
-            description: Churn duration for kube-burner cluster-density tests
+            description: Churn duration for kube-burner cluster-density tests in m or h
           type:
-            #TODO -- Convert to units
             type_id: string
           default: '1h'
           required: false
@@ -128,12 +131,12 @@ steps:
   #   plugin: quay.io/arcalot/arcaflow-plugin-metadata:0.1.0
   #   input: {}
   node-density:
-    plugin: http://quay.io/humesh/arcaflow-plugin-kube-burner:latest
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
     input:
       workload: 'node-density'
       uuid: !expr $.steps.uuidgen.outputs.success
       pods_per_node: !expr $.input.kb_pods_per_node
-      timeout: !expr $.input.kb_timeout_minutes
+      timeout: !expr $.input.kb_timeout
       # Note this value is only used in this step, and is hard-coded here
       pod_ready_threshold: '20s'
       es_server: !expr $.input.elastic_host
@@ -141,34 +144,37 @@ steps:
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
   node-density-heavy:
-    plugin: http://quay.io/humesh/arcaflow-plugin-kube-burner:latest
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
     input:
       workload: 'node-density-heavy'
-      uuid: !expr $.steps.uuidgen.outputs.success
+      # This is a temporary hack to serialize the executions
+      uuid: !expr $.steps.node-density.outputs.success.uuid
       pods_per_node: !expr $.input.kb_pods_per_node
-      timeout: !expr $.input.kb_timeout_minutes
+      timeout: !expr $.input.kb_timeout
       es_server: !expr $.input.elastic_host
       es_index: !expr $.input.elastic_index
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
   node-density-cni:
-    plugin: http://quay.io/humesh/arcaflow-plugin-kube-burner:latest
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
     input:
       workload: 'node-density-cni'
-      uuid: !expr $.steps.uuidgen.outputs.success
+      # This is a temporary hack to serialize the executions
+      uuid: !expr $.steps.node-density-heavy.outputs.success.uuid
       pods_per_node: !expr $.input.kb_pods_per_node
-      timeout: !expr $.input.kb_timeout_minutes
+      timeout: !expr $.input.kb_timeout
       es_server: !expr $.input.elastic_host
       es_index: !expr $.input.elastic_index
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
   cluster-density:
-    plugin: http://quay.io/humesh/arcaflow-plugin-kube-burner:latest
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
     input:
       workload: 'cluster-density'
-      uuid: !expr $.steps.uuidgen.outputs.success
+      # This is a temporary hack to serialize the executions
+      uuid: !expr $.steps.node-density-cni.outputs.success.uuid
       iterations: !expr $.input.kb_cd_iterations
-      timeout: !expr $.input.kb_timeout_minutes
+      timeout: !expr $.input.kb_timeout
       churn: !expr $.input.kb_cd_churn
       churn-delay: !expr $.input.kb_cd_churn_delay
       churn-duration: !expr $.input.kb_cd_churn_duration
