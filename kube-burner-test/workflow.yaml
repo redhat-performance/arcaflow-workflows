@@ -43,21 +43,14 @@ input:
             description: The timeout for kube-burner in s, m, or h
           type:
             type_id: string
-          default: '2h'
+          default: '"2h"'
           required: false
         kb_log_level:
           display:
             description: The log level for kube-burner
           type:
-            type_id: enum_string
-          default: 'info'
-          values:
-            info:
-              name: Info log level
-            debug:
-              name: Debug log level
-            error:
-              name: Error log level
+            type_id: string
+          default: '"info"'
           required: false
         kb_cd_iterations:
           display:
@@ -70,7 +63,7 @@ input:
           display:
             description: Whether to use churn with kube-burner cluster-density tests
           type:
-            type_id: boolean
+            type_id: bool
           default: true
           required: false
         kb_cd_churn_delay:
@@ -78,14 +71,14 @@ input:
             description: Churn delay for kube-burner cluster-density tests in m
           type:
             type_id: string
-          default: '2m'
+          default: '"2m"'
           required: false
         kb_cd_churn_duration:
           display:
             description: Churn duration for kube-burner cluster-density tests in m or h
           type:
             type_id: string
-          default: '1h'
+          default: '"1h"'
           required: false
         kb_cd_churn_percent:
           display:
@@ -94,7 +87,7 @@ input:
             type_id: integer
           default: 10
           required: false
-      elastic_host:
+        elastic_host:
           display:
             description: The host URL for the ElasticSearch service
             name: elasticsearch host url
@@ -118,6 +111,14 @@ input:
             name: elasticsearch index
           type:
             type_id: string
+        kubeconfig:
+          display:
+            description: The complete kubeconfig file as a string
+            name: Kubeconfig file contents
+          type:
+            type_id: string
+          required: true
+        
 steps:
   uuidgen:
     plugin: quay.io/arcalot/arcaflow-plugin-utilities:0.2.0
@@ -130,11 +131,11 @@ steps:
   # system_config:
   #   plugin: quay.io/arcalot/arcaflow-plugin-metadata:0.1.0
   #   input: {}
-  node-density:
+  node_density:
     plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
     input:
       workload: 'node-density'
-      uuid: !expr $.steps.uuidgen.outputs.success
+      uuid: !expr $.steps.uuidgen.outputs.success.uuid
       pods_per_node: !expr $.input.kb_pods_per_node
       timeout: !expr $.input.kb_timeout
       # Note this value is only used in this step, and is hard-coded here
@@ -143,36 +144,36 @@ steps:
       es_index: !expr $.input.elastic_index
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
-  node-density-heavy:
+  node_density_heavy:
     plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
     input:
       workload: 'node-density-heavy'
       # This is a temporary hack to serialize the executions
-      uuid: !expr $.steps.node-density.outputs.success.uuid
+      uuid: !expr $.steps.node_density.outputs.success.uuid
       pods_per_node: !expr $.input.kb_pods_per_node
       timeout: !expr $.input.kb_timeout
       es_server: !expr $.input.elastic_host
       es_index: !expr $.input.elastic_index
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
-  node-density-cni:
+  node_density_cni:
     plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
     input:
       workload: 'node-density-cni'
       # This is a temporary hack to serialize the executions
-      uuid: !expr $.steps.node-density-heavy.outputs.success.uuid
+      uuid: !expr $.steps.node_density_heavy.outputs.success.uuid
       pods_per_node: !expr $.input.kb_pods_per_node
       timeout: !expr $.input.kb_timeout
       es_server: !expr $.input.elastic_host
       es_index: !expr $.input.elastic_index
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
-  cluster-density:
+  cluster_density:
     plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
     input:
       workload: 'cluster-density'
       # This is a temporary hack to serialize the executions
-      uuid: !expr $.steps.node-density-cni.outputs.success.uuid
+      uuid: !expr $.steps.node_density_cni.outputs.success.uuid
       iterations: !expr $.input.kb_cd_iterations
       timeout: !expr $.input.kb_timeout
       churn: !expr $.input.kb_cd_churn
@@ -190,7 +191,7 @@ output:
   cluster_name: !expr $.input.cluster_name
   elasticsearch_host: !expr $.input.elastic_host
   elasticsearch_index: !expr $.input.elastic_index
-  node-density: !expr $.steps.node-density.outputs.success
-  node-density-heavy: !expr $.steps.node-density.outputs.success
-  node-density-cni: !expr $.steps.node-density.outputs.success
-  cluster-density: !expr $.steps.node-density.outputs.successsuccess
+  node_density: !expr $.steps.node_density.outputs.success
+  node_density_heavy: !expr $.steps.node_density_heavy.outputs.success
+  node_density_cni: !expr $.steps.node_density_cni.outputs.success
+  cluster_density: !expr $.steps.node_density.outputs.success

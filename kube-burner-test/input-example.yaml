@@ -8,7 +8,7 @@
 # All kube-burner values below have defaults in the workflow.
 # These defaults can be overridden here in the input file.
 # kb_pods_per_node: 245
-# kb_timeout_minutes: 120
+# kb_timeout: '2h'
 # kb_log_level: 'info'
 # kb_cd_iterations: 500
 # kb_cd_churn: true
