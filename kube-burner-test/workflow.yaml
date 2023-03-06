@@ -71,8 +71,8 @@ input:
           display:
             description: Whether to use churn with kube-burner cluster-density tests
           type:
-            type_id: bool
-          default: true
+            type_id: string
+          default: '"true"'
           required: false
         kb_cd_churn_delay:
           display:
