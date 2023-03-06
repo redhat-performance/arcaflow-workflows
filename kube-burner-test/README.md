@@ -40,6 +40,20 @@ This test workflow is modeled after the [Airflow CI small-control-plane-mgs DAG 
   $ arcaflow --input input.yaml
   ```
 
+## Running the plugin stand-alone
+All Arcaflow plugins can be run stand-alone as CLI tools. This is useful for building and testing specific functionality to later include in a workflow, or for running plugins one-off via direct execution or external automation.
+
+The plugin has a defined input schema, which you can see in native/YAML or JSON format:
+```bash
+$ podman run -i quay.io/humesh/arcaflow-plugin-kube-burner:latest --schema
+$ podman run -i quay.io/humesh/arcaflow-plugin-kube-burner:latest --json-schema=input
+```
+
+To run the plugin directly, you need to pass an input that matches the schema requirements. There is an [input-kube-burner-plugin.yaml](input-kube-burner-plugin.yaml) file included here for testing.
+```bash
+$ cat input-kube-burner-plugin.yaml | podman run -i quay.io/humesh/arcaflow-plugin-kube-burner:latest --debug -f -
+```
+
 ## Workflow graph
 The [workflow.yaml](workflow.yaml) file defines the input schema, workflow steps and relationships, and the expected output schema of the workflow. The worflow is designed such that workload parameters can be modified via the [input.yaml](input-example.yaml). The complete workflow graph diagram looks like this:
 ```mermaid
