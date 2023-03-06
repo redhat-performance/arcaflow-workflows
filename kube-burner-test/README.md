@@ -40,6 +40,10 @@ This test workflow is modeled after the [Airflow CI small-control-plane-mgs DAG 
   $ arcaflow --input input.yaml --config config.yaml
   ```
 
+### Asciinema recording of workflow
+
+[![asciicast](https://asciinema.org/a/565206.svg)](https://asciinema.org/a/565206)
+
 ## Running the plugin stand-alone
 All Arcaflow plugins can be run stand-alone as CLI tools. This is useful for building and testing specific functionality to later include in a workflow, or for running plugins one-off via direct execution or external automation.
 
