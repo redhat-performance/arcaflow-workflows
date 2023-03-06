@@ -35,9 +35,9 @@ This test workflow is modeled after the [Airflow CI small-control-plane-mgs DAG 
 - Modify the [config.yaml](config.yaml) file to your needs.
   - *Note: The default config uses the [docker deployer](https://arcalot.io/arcaflow/engine/#docker-deployer) for local plugin containers. You can also use the [podman deployer](https://arcalot.io/arcaflow/engine/#podman-deployer). Other parameters set in the config are mostly related to logging.*
   - *All plugins are run once initially via the default deployer in order for the engine to retrieve their schemas and build the workflow relationships.*
-- Run the workflow (example assumes the `arcaflow` binary is in your `$PATH` and the `config.yaml` and `workflow.yaml` files are in the local directory):
+- Run the workflow (example assumes the `arcaflow` binary is in your `$PATH` and the `workflow.yaml` file is in the local directory):
   ```bash
-  $ arcaflow --input input.yaml
+  $ arcaflow --input input.yaml --config config.yaml
   ```
 
 ## Running the plugin stand-alone
