@@ -41,6 +41,7 @@ This test workflow is modeled after the [Airflow CI small-control-plane-mgs DAG 
   ```
 
 ## Workflow graph
+The [workflow.yaml](workflow.yaml) file defines the input schema, workflow steps and relationships, and the expected output schema of the workflow. The worflow is designed such that workload parameters can be modified via the [input.yaml](input-example.yaml). The complete workflow graph diagram looks like this:
 ```mermaid
 flowchart LR
 subgraph input
