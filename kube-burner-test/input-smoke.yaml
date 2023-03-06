@@ -9,6 +9,7 @@ cluster_name: 'bar'
 # These defaults can be overridden here in the input file.
 kb_pods_per_node: 40
 kb_timeout: '5m'
+kb_pod_ready_threshold: '30s'
 # kb_log_level: 'info'
 kb_cd_iterations: 5
 kb_cd_churn: true

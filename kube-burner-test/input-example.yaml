@@ -9,6 +9,7 @@
 # These defaults can be overridden here in the input file.
 # kb_pods_per_node: 245
 # kb_timeout: '2h'
+# kb_pod_ready_threshold: '5s'
 # kb_log_level: 'info'
 # kb_cd_iterations: 500
 # kb_cd_churn: true
