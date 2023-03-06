@@ -194,9 +194,9 @@ steps:
       timeout: !expr $.input.kb_timeout
       pod_ready_threshold: !expr $.input.kb_pod_ready_threshold
       churn: !expr $.input.kb_cd_churn
-      churn-delay: !expr $.input.kb_cd_churn_delay
-      churn-duration: !expr $.input.kb_cd_churn_duration
-      churn-percent: !expr $.input.kb_cd_churn_percent
+      churn_delay: !expr $.input.kb_cd_churn_delay
+      churn_duration: !expr $.input.kb_cd_churn_duration
+      churn_percent: !expr $.input.kb_cd_churn_percent
       es_server: !expr $.input.elastic_host
       es_index: !expr $.input.elastic_index
       log_level: !expr $.input.kb_log_level
