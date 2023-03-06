@@ -164,7 +164,7 @@ steps:
       uuid: !expr $.steps.node_density.outputs.success.uuid
       pods_per_node: !expr $.input.kb_pods_per_node
       timeout: !expr $.input.kb_timeout
-      pod_ready_threshold: $.input.kb_pod_ready_threshold
+      pod_ready_threshold: !expr $.input.kb_pod_ready_threshold
       es_server: !expr $.input.elastic_host
       es_index: !expr $.input.elastic_index
       log_level: !expr $.input.kb_log_level
@@ -178,7 +178,7 @@ steps:
       uuid: !expr $.steps.node_density_heavy.outputs.success.uuid
       pods_per_node: !expr $.input.kb_pods_per_node
       timeout: !expr $.input.kb_timeout
-      pod_ready_threshold: $.input.kb_pod_ready_threshold
+      pod_ready_threshold: !expr $.input.kb_pod_ready_threshold
       es_server: !expr $.input.elastic_host
       es_index: !expr $.input.elastic_index
       log_level: !expr $.input.kb_log_level
@@ -192,7 +192,7 @@ steps:
       uuid: !expr $.steps.node_density_cni.outputs.success.uuid
       iterations: !expr $.input.kb_cd_iterations
       timeout: !expr $.input.kb_timeout
-      pod_ready_threshold: $.input.kb_pod_ready_threshold
+      pod_ready_threshold: !expr $.input.kb_pod_ready_threshold
       churn: !expr $.input.kb_cd_churn
       churn-delay: !expr $.input.kb_cd_churn_delay
       churn-duration: !expr $.input.kb_cd_churn_duration
