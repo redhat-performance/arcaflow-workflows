@@ -1,5 +1,25 @@
+# Arcaflow kube-burner workflow
+This test workflow is modeled after the [Airflow CI small-control-plane-mgs DAG used here](https://github.com/cloud-bulldozer/airflow-kubernetes/blob/master/dags/openshift_nightlies/config/benchmarks/small-control-plane-mgs.json).
+
+## Workflow graph
 ```mermaid
 flowchart LR
+subgraph input
+input.elastic_index
+input.run_id
+input.kb_log_level
+input.kb_pods_per_node
+input.kb_cd_churn_percent
+input.kb_timeout
+input.user
+input.cluster_name
+input.kb_cd_churn_delay
+input.kb_cd_churn_duration
+input.kb_cd_churn
+input.elastic_host
+input.kb_cd_iterations
+input.kubeconfig
+end
 steps.uuidgen-->steps.uuidgen.outputs.error
 steps.uuidgen-->steps.uuidgen.outputs.success
 input.elastic_index-->output
@@ -38,6 +58,7 @@ steps.node_density_cni.outputs.success-->steps.cluster_density
 steps.node_density_cni.outputs.success-->output
 steps.node_density_heavy.outputs.success-->steps.node_density_cni
 steps.node_density_heavy.outputs.success-->output
+steps.node_density_cni.outputs.success-->steps.cluster_density
 input.kb_cd_churn-->steps.cluster_density
 input.elastic_host-->steps.cluster_density
 input.elastic_host-->output
@@ -51,4 +72,5 @@ input.kubeconfig-->steps.node_density_cni
 input.kubeconfig-->steps.cluster_density
 steps.cluster_density-->steps.cluster_density.outputs.success
 steps.cluster_density-->steps.cluster_density.outputs.error
+steps.cluster_density.outputs.success-->output
 ```

@@ -1,5 +1,8 @@
 log:
   level: debug
+logged_outputs:
+  error:
+    level: error
 deployer:
   type: docker
   deployment:

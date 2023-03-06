@@ -1,3 +1,4 @@
+# The input section defines the input schema to be used for the workflow.
 input:
   root: RootObject
   objects:
@@ -118,7 +119,9 @@ input:
           type:
             type_id: string
           required: true
-        
+
+# The steps section defines the actions (plugins) of the workflow and the
+# relationships between inputs and data passed between plugins.
 steps:
   uuidgen:
     plugin: quay.io/arcalot/arcaflow-plugin-utilities:0.2.0
@@ -184,6 +187,10 @@ steps:
       es_index: !expr $.input.elastic_index
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
+
+# The output secion defines the expected workflow output schema. Any failures
+# to create the defined output will result in the reported failure of the
+# workflow as a whole.
 output:
   uuid: !expr $.steps.uuidgen.outputs.success.uuid
   run_id: !expr $.input.run_id
@@ -194,4 +201,4 @@ output:
   node_density: !expr $.steps.node_density.outputs.success
   node_density_heavy: !expr $.steps.node_density_heavy.outputs.success
   node_density_cni: !expr $.steps.node_density_cni.outputs.success
-  cluster_density: !expr $.steps.node_density.outputs.success
+  cluster_density: !expr $.steps.cluster_density.outputs.success
