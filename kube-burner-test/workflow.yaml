@@ -142,7 +142,8 @@ steps:
   #   plugin: quay.io/arcalot/arcaflow-plugin-metadata:0.1.0
   #   input: {}
   node_density:
-    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    step: kube-burner
     input:
       workload: 'node-density'
       uuid: !expr $.steps.uuidgen.outputs.success.uuid
@@ -155,7 +156,8 @@ steps:
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
   node_density_heavy:
-    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    step: kube-burner
     input:
       workload: 'node-density-heavy'
       # This is a temporary hack to serialize the executions
@@ -168,7 +170,8 @@ steps:
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
   node_density_cni:
-    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    step: kube-burner
     input:
       workload: 'node-density-cni'
       # This is a temporary hack to serialize the executions
@@ -181,7 +184,8 @@ steps:
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
   cluster_density:
-    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    step: kube-burner
     input:
       workload: 'cluster-density'
       # This is a temporary hack to serialize the executions
