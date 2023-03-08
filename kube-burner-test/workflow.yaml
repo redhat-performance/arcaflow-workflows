@@ -1,0 +1,218 @@
+# The input section defines the input schema to be used for the workflow.
+input:
+  root: RootObject
+  objects:
+    RootObject:
+      id: RootObject
+      properties:
+        # run_id, user, and cluster_name are simply metadata values that can be
+        # used for record tracking
+        run_id:
+          display:
+            description: A unique run identifier for tracking groups of workflows triggered by external automation/CI
+            name: Run ID
+          type:
+            type_id: string
+          default: "\"\""
+          required: false
+        user:
+          display:
+            description: A user name identifier for tracking groups of workflows triggered by external automation/CI
+            name: User
+          type:
+            type_id: string
+          default: "\"\""
+          required: false
+        cluster_name:
+          display:
+            description: A cluster name identifier for tracking groups of workflows triggered by external automation/CI
+            name: Cluster Name
+          type:
+            type_id: string
+          default: "\"\""
+          required: false
+        kb_pods_per_node:
+          display:
+            description: The number of pods per node for the kube-burner workloads
+            name: pods per node
+          type:
+            type_id: integer
+          default: 245
+          required: false
+        kb_timeout:
+          display:
+            description: The timeout for kube-burner in s, m, or h
+          type:
+            type_id: string
+          default: '"2h"'
+          required: false
+        kb_pod_ready_threshold:
+          display:
+            description: The maximum time to allow for pods to be ready
+          type:
+            type_id: string
+          default: '"5s"'
+          required: false
+        kb_log_level:
+          display:
+            description: The log level for kube-burner
+          type:
+            type_id: string
+          default: '"info"'
+          required: false
+        kb_cd_iterations:
+          display:
+            description: The number of iterations for kube-burner cluster-density tests
+          type:
+            type_id: integer
+          default: 500
+          required: false
+        kb_cd_churn:
+          display:
+            description: Whether to use churn with kube-burner cluster-density tests
+          type:
+            type_id: string
+          default: '"true"'
+          required: false
+        kb_cd_churn_delay:
+          display:
+            description: Churn delay for kube-burner cluster-density tests in m
+          type:
+            type_id: string
+          default: '"2m"'
+          required: false
+        kb_cd_churn_duration:
+          display:
+            description: Churn duration for kube-burner cluster-density tests in m or h
+          type:
+            type_id: string
+          default: '"1h"'
+          required: false
+        kb_cd_churn_percent:
+          display:
+            description: Churn percentage for kube-burner cluster-density tests
+          type:
+            type_id: integer
+          default: 10
+          required: false
+        elastic_host:
+          display:
+            description: The host URL for the ElasticSearch service
+            name: elasticsearch host url
+          type:
+            type_id: string
+        # elastic_username:
+        #   display:
+        #     description: The username for the ElasticSearch service
+        #     name: elasticsearch username
+        #   type:
+        #     type_id: string
+        # elastic_password:
+        #   display:
+        #     description: The password for the ElasticSearch service
+        #     name: elasticsearch password
+        #   type:
+        #     type_id: string
+        elastic_index:
+          display:
+            description: The index for the ElasticSearch service
+            name: elasticsearch index
+          type:
+            type_id: string
+        kubeconfig:
+          display:
+            description: The complete kubeconfig file as a string
+            name: Kubeconfig file contents
+          type:
+            type_id: string
+          required: true
+
+# The steps section defines the actions (plugins) of the workflow and the
+# relationships between inputs and data passed between plugins.
+steps:
+  uuidgen:
+    plugin: quay.io/arcalot/arcaflow-plugin-utilities:0.2.0
+    step: uuid
+    input: {}
+  # kubeconfig:
+  #   plugin: quay.io/arcalot/arcaflow-plugin-kubeconfig:0.2.0
+  #   input:
+  #     kubeconfig: !expr $.input.kubeconfig
+  # system_config:
+  #   plugin: quay.io/arcalot/arcaflow-plugin-metadata:0.1.0
+  #   input: {}
+  node_density:
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    step: kube-burner
+    input:
+      workload: 'node-density'
+      uuid: !expr $.steps.uuidgen.outputs.success.uuid
+      pods_per_node: !expr $.input.kb_pods_per_node
+      timeout: !expr $.input.kb_timeout
+      # Note this is a hard-coded setting instead of using the input
+      pod_ready_threshold: '20s'
+      es_server: !expr $.input.elastic_host
+      es_index: !expr $.input.elastic_index
+      log_level: !expr $.input.kb_log_level
+      kubeconfig: !expr $.input.kubeconfig
+  node_density_heavy:
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    step: kube-burner
+    input:
+      workload: 'node-density-heavy'
+      # This is a temporary hack to serialize the executions
+      uuid: !expr $.steps.node_density.outputs.success.uuid
+      pods_per_node: !expr $.input.kb_pods_per_node
+      timeout: !expr $.input.kb_timeout
+      pod_ready_threshold: !expr $.input.kb_pod_ready_threshold
+      es_server: !expr $.input.elastic_host
+      es_index: !expr $.input.elastic_index
+      log_level: !expr $.input.kb_log_level
+      kubeconfig: !expr $.input.kubeconfig
+  node_density_cni:
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    step: kube-burner
+    input:
+      workload: 'node-density-cni'
+      # This is a temporary hack to serialize the executions
+      uuid: !expr $.steps.node_density_heavy.outputs.success.uuid
+      pods_per_node: !expr $.input.kb_pods_per_node
+      timeout: !expr $.input.kb_timeout
+      pod_ready_threshold: !expr $.input.kb_pod_ready_threshold
+      es_server: !expr $.input.elastic_host
+      es_index: !expr $.input.elastic_index
+      log_level: !expr $.input.kb_log_level
+      kubeconfig: !expr $.input.kubeconfig
+  cluster_density:
+    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    step: kube-burner
+    input:
+      workload: 'cluster-density'
+      # This is a temporary hack to serialize the executions
+      uuid: !expr $.steps.node_density_cni.outputs.success.uuid
+      iterations: !expr $.input.kb_cd_iterations
+      timeout: !expr $.input.kb_timeout
+      pod_ready_threshold: !expr $.input.kb_pod_ready_threshold
+      churn: !expr $.input.kb_cd_churn
+      churn_delay: !expr $.input.kb_cd_churn_delay
+      churn_duration: !expr $.input.kb_cd_churn_duration
+      churn_percent: !expr $.input.kb_cd_churn_percent
+      es_server: !expr $.input.elastic_host
+      es_index: !expr $.input.elastic_index
+      log_level: !expr $.input.kb_log_level
+      kubeconfig: !expr $.input.kubeconfig
+
+# The output secion defines the expected workflow output schema. Any failures
+# to create the defined output will result in the reported failure of the
+# workflow as a whole.
+output:
+  uuid: !expr $.steps.uuidgen.outputs.success.uuid
+  run_id: !expr $.input.run_id
+  user: !expr $.input.user
+  cluster_name: !expr $.input.cluster_name
+  elasticsearch_host: !expr $.input.elastic_host
+  elasticsearch_index: !expr $.input.elastic_index
+  node_density: !expr $.steps.node_density.outputs.success
+  node_density_heavy: !expr $.steps.node_density_heavy.outputs.success
+  node_density_cni: !expr $.steps.node_density_cni.outputs.success
+  cluster_density: !expr $.steps.cluster_density.outputs.success

@@ -1,0 +1,25 @@
+# This is a sample input file for the workflow
+# run_id, user, and cluster_name are optional metadata fields
+# for record tracking purposes
+run_id: 'foo'
+user: 'myuser'
+cluster_name: 'bar'
+
+# All kube-burner values below have defaults in the workflow.
+# These defaults can be overridden here in the input file.
+kb_pods_per_node: 40
+kb_timeout: '5m'
+kb_pod_ready_threshold: '30s'
+# kb_log_level: 'info'
+kb_cd_iterations: 1
+kb_cd_churn: true
+kb_cd_churn_delay: '1m'
+kb_cd_churn_duration: '2m'
+kb_cd_churn_percent: 10
+
+# Elasticsearch and kubeconfig values are required.
+# The kubeconfig must be a yaml string.
+elastic_host: '172.17.0.1'
+elastic_index: 'test-index'
+kubeconfig: |
+  <my kubeconfig>
