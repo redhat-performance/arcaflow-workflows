@@ -4,7 +4,7 @@ logged_outputs:
   error:
     level: error
 deployer:
-  type: docker
+  type: podman
   deployment:
     host:
       NetworkMode: "host"
