@@ -45,7 +45,7 @@ Arcaflow is a workflow engine that uses plugins to run a graph of container-base
 
 This test workflow is modeled after the [Airflow CI small-control-plane-mgs DAG used here](https://github.com/cloud-bulldozer/airflow-kubernetes/blob/master/dags/openshift_nightlies/config/benchmarks/small-control-plane-mgs.json).
 
-The workflow uses primarily iterations of our work-in-progress [kube-burner OCP wrapper](https://github.com/Harshith-umesh/arcaflow-plugin-kube-burner) plugin ([container image in quay.io](https://quay.io/repository/humesh/arcaflow-plugin-kube-burner?tab=tags)). The default kube-burner parameters are set in the [workflow.yaml](workflow.yaml) file to match the referenced Airflow DAG above, but those parameters can also be overridden with the [input.yaml](input-example.yaml) file.
+The workflow uses primarily iterations of our work-in-progress [kube-burner OCP wrapper](https://github.com/redhat-performance/arcaflow-plugin-kube-burner) plugin ([container image in quay.io](https://quay.io/repository/redhat-performance/arcaflow-plugin-kube-burner?tab=tags). The default kube-burner parameters are set in the [workflow.yaml](workflow.yaml) file to match the referenced Airflow DAG above, but those parameters can also be overridden with the [input.yaml](input-example.yaml) file.
 
 ### input section
 The input section defines the input schema that the workflow author exposes to the workflow user. This looks lengthy and verbose at first glance, but it's truly just a data structure definition, and the point of the verbose construct is to allow for self-documentation of the workflow and enabling a future user interface. Ultimately this section only defines the inputs, data types, descriptions, and any default values. These inputs are passed on to the workflow in the **steps** section.
@@ -57,7 +57,7 @@ In the steps section is where the workflow graph is defined. Each step is a plug
 steps:
   ...
   node_density:
-    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    plugin: quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest
     step: kube-burner
     input:
       workload: 'node-density'
@@ -73,7 +73,7 @@ steps:
 steps:
   ...
   node_density_heavy:
-    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    plugin: quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest
     step: kube-burner
     input:
       workload: 'node-density-heavy'
@@ -97,14 +97,14 @@ All Arcaflow plugins can be run stand-alone as CLI tools. This is useful for bui
 
 The plugin has a defined input schema, which you can see in native/YAML or JSON format:
 ```bash
-$ docker run -i quay.io/humesh/arcaflow-plugin-kube-burner:2 --schema
-$ docker run -i quay.io/humesh/arcaflow-plugin-kube-burner:2 --json-schema=input
+$ docker run -i quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest --schema
+$ docker run -i quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest --json-schema=input
 ```
 
 To run the plugin directly, you need to pass an input that matches the schema requirements. There is an [input-kube-burner-plugin.yaml](input-kube-burner-plugin.yaml) file included here for testing.
 ```bash
 $ cat input-kube-burner-plugin.yaml | docker run -i \
-quay.io/humesh/arcaflow-plugin-kube-burner:2 --step kube-burner --debug -f -
+quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest --step kube-burner --debug -f -
 ```
 
 ## Workflow graph
