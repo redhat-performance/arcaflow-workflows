@@ -142,7 +142,7 @@ steps:
   #   plugin: quay.io/arcalot/arcaflow-plugin-metadata:0.1.0
   #   input: {}
   node_density:
-    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    plugin: quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest
     step: kube-burner
     input:
       workload: 'node-density'
@@ -156,7 +156,7 @@ steps:
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
   node_density_heavy:
-    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    plugin: quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest
     step: kube-burner
     input:
       workload: 'node-density-heavy'
@@ -170,7 +170,7 @@ steps:
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
   node_density_cni:
-    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    plugin: quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest
     step: kube-burner
     input:
       workload: 'node-density-cni'
@@ -184,7 +184,7 @@ steps:
       log_level: !expr $.input.kb_log_level
       kubeconfig: !expr $.input.kubeconfig
   cluster_density:
-    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:2
+    plugin: quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest
     step: kube-burner
     input:
       workload: 'cluster-density'
