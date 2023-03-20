@@ -70,9 +70,10 @@ steps:
     step: delete-web-burner
     input:
       workload_template: 'cfg_delete_icni2_cluster_density2.yml'
-      uuid: !expr $.steps.uuidgen.outputs.success.uuid
+      uuid: !expr $.steps.web_burner.outputs.success.uuid
       scale_factor: !expr $.input.wb_scale_factor
       bfd_enabled: !expr $.input.wb_bfd_enabled
+      number_of_nodes: !expr $.input.wb_number_of_nodes
       kubeconfig: !expr $.input.kubeconfig_str
   metadata:
     plugin: quay.io/arcalot/arcaflow-plugin-metadata:latest
