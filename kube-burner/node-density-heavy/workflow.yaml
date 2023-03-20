@@ -46,6 +46,24 @@ input:
             name: timeout
           type:
             type_id: string
+        kubeburner_alerting:
+          display:
+            description: Enable alerting(true/false)
+            name: alerting
+          type:
+            type_id: string
+        kubeburner_gc:
+          display:
+            description: Garbage collect created namespaces(true/false)
+            name: gc
+          type:
+            type_id: string
+        kubeburner_probes_period:
+          display:
+            description: Perf app readiness/livenes probes period in seconds
+            name: probes-period
+          type:
+            type_id: int              
         kubeburner_pod_ready_threshold:
           display:
             description: Pod ready timeout threshold for node-density workload
@@ -65,7 +83,7 @@ steps:
     step: uuid
     input: {}
   kubeburner:
-    plugin: quay.io/humesh/arcaflow-plugin-kube-burner:latest
+    plugin: quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest
     step: kube-burner
     input:
       workload: node-density-heavy
@@ -77,6 +95,9 @@ steps:
       log_level: !expr $.input.kubeburner_loglevel
       pods_per_node: !expr $.input.kubeburner_pods_per_node
       timeout: !expr $.input.kubeburner_timeout
+      gc: !expr $.input.kubeburner_gc
+      alerting: !expr $.input.kubeburner_alerting
+      probes_period: !expr $.input.kubeburner_probes_period
       pod_ready_threshold: !expr $.input.kubeburner_pod_ready_threshold
       kubeconfig: !expr $.input.kubeconfig_str
   metadata:

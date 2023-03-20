@@ -1,0 +1,85 @@
+input:
+  root: RootObject
+  objects:
+    RootObject:
+      id: RootObject
+      properties:
+        wb_indexing:
+          display:
+            description: To enable or disable indexing in elasticsearch(true/false)
+            name: indexing 
+          type:
+            type_id: string
+        wb_es_server:
+          display:
+            description: List of ES instances
+            name: es-server
+          type:
+            type_id: string
+        wb_es_index:
+          display:
+            description: The ElasticSearch index used to index the metrics
+            name: es-index
+          type:
+            type_id: string
+        wb_number_of_nodes:
+          display:
+            description: Size of cluster/ number of nodes in the cluster
+            name: number_of_nodes
+          type:
+            type_id: integer
+        wb_scale_factor:
+          display:
+            description: Scaling factor for the workload
+            name: scale_factor
+          type:
+            type_id: integer
+        wb_bfd_enabled:
+          display:
+            description: Bidirectional Forwarding Detection
+            name: bfd_enabled
+          type:
+            type_id: string
+        kubeconfig_str:
+          display:
+            description: Openshift cluster kubeconfig file content as a string
+            name: kubeconfig
+          type:
+            type_id: string
+
+steps:
+  uuidgen:
+    plugin: quay.io/arcalot/arcaflow-plugin-utilities:latest
+    step: uuid
+    input: {}
+  web_burner:
+    plugin: quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest
+    step: run-web-burner
+    input:
+      workload_template: 'cfg_icni2_cluster_density2.yml'
+      uuid: !expr $.steps.uuidgen.outputs.success.uuid
+      indexing: !expr $.input.wb_indexing
+      es_server: !expr $.input.wb_es_server
+      es_index: !expr $.input.wb_es_index
+      scale_factor: !expr $.input.wb_scale_factor
+      bfd_enabled: !expr $.input.wb_bfd_enabled
+      number_of_nodes: !expr $.input.wb_number_of_nodes
+      kubeconfig: !expr $.input.kubeconfig_str
+  delete_web_burner:
+    plugin: quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest
+    step: delete-web-burner
+    input:
+      workload_template: 'cfg_delete_icni2_cluster_density2.yml'
+      uuid: !expr $.steps.uuidgen.outputs.success.uuid
+      scale_factor: !expr $.input.kubeburner_iterations
+      bfd_enabled: !expr $.input.kubeburner_timeout
+      kubeconfig: !expr $.input.kubeconfig_str
+  metadata:
+    plugin: quay.io/arcalot/arcaflow-plugin-metadata:latest
+    input: {}
+
+output:
+  uuid: !expr $.steps.uuidgen.outputs.success.uuid
+  web_burner: !expr $.steps.web_burner.outputs.success
+  delete_web_burner: !expr $.steps.delete_web_burner.outputs.success
+  metadata: !expr $.steps.metadata.outputs.success
