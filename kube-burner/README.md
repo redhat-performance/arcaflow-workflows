@@ -20,7 +20,7 @@ Each folder contains the below set of files which are necessary to run the workf
 Download the [Arcaflow engine binary](https://github.com/arcalot/arcaflow-engine/releases) to your local system or jump host with network access to your Kubernetes/OpenShift cluster.
 
 wget https://github.com/arcalot/arcaflow-engine/releases/download/v0.3.2/arcaflow_0.3.2_linux_amd64.tar.gz
-tar -xzf arcaflow_0.3.0_linux_amd64.tar.gz -C . arcaflow 
+tar -xzf arcaflow_0.3.2_linux_amd64.tar.gz -C . arcaflow 
 
 Clone this workflows repo, and set this directory to your workflow working directory (adjust as needed):
 ```
@@ -43,7 +43,7 @@ Run the workflow (this example assumes the `arcaflow` binary is in your `$PATH` 
 Run the workflow:
 
 ```bash
-  $ arcaflow --input input.yaml --config config-podman.yaml
+  $ ./arcaflow --input input.yaml --config config-podman.yaml
 ```
 
 

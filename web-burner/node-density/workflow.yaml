@@ -71,8 +71,8 @@ steps:
     input:
       workload_template: 'cfg_delete_icni2_node_density2.yml'
       uuid: !expr $.steps.uuidgen.outputs.success.uuid
-      scale_factor: !expr $.input.kubeburner_iterations
-      bfd_enabled: !expr $.input.kubeburner_timeout
+      scale_factor: !expr $.input.wb_scale_factor
+      bfd_enabled: !expr $.input.wb_bfd_enabled
       kubeconfig: !expr $.input.kubeconfig_str
   metadata:
     plugin: quay.io/arcalot/arcaflow-plugin-metadata:latest
