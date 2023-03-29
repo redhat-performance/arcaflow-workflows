@@ -1,0 +1,15 @@
+# This is a sample input file for the workflow
+
+wb_scale_factor: 1
+wb_bfd_enabled: false
+wb_number_of_nodes: 120
+wb_indexing: true
+wb_es_server: 'https://search-perfscale-dev-chmf5l4sh66lvxbnadi4bznl3a.us-west-2.es.amazonaws.com:443'
+wb_es_index: 'ripsaw-kube-burner'
+kubeconfig_str: |
+  apiVersion: v1
+  clusters:
+  - cluster:
+      certificate-authority-data: LS0tLS1CR...
+      server: https://api.dummycluster.openshift.com:6443
+    name: api-dummycluster-openshift-com:6443
