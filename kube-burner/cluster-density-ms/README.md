@@ -1,8 +1,8 @@
-# Cluster-density-v2 Workflow
+# Cluster-density-managed-services Workflow
 
 ## Workflow Description
 
-This example workflow runs a [kube-burner](https://github.com/cloud-bulldozer/kube-burner) cluster-density-v2 workload plugin on the local system.
+This example workflow runs a [kube-burner](https://github.com/cloud-bulldozer/kube-burner) cluster-density-ms workload plugin on the local system.
 
 ## Workflow Diagram
 This diagram shows the complete end-to-end workflow logic.

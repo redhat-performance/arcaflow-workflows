@@ -99,7 +99,7 @@ steps:
     plugin: quay.io/redhat-performance/arcaflow-plugin-kube-burner:latest
     step: kube-burner
     input:
-      workload: cluster-density-v2
+      workload: cluster-density-ms
       uuid: !expr $.steps.uuidgen.outputs.success.uuid
       es_server: !expr $.input.kubeburner_es_server
       es_index: !expr $.input.kubeburner_es_index
