@@ -4,8 +4,8 @@ wb_scale_factor: 1
 wb_bfd_enabled: false
 wb_number_of_nodes: 120
 wb_indexing: true
-wb_es_server: 'https://search-perfscale-dev-chmf5l4sh66lvxbnadi4bznl3a.us-west-2.es.amazonaws.com:443'
-wb_es_index: 'ripsaw-kube-burner'
+wb_es_server: ''
+wb_es_index: ''
 kubeconfig_str: |
   apiVersion: v1
   clusters:
