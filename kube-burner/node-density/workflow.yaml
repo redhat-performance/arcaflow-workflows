@@ -73,7 +73,7 @@ input:
 
 steps:
   uuidgen:
-    plugin: quay.io/arcalot/arcaflow-plugin-utilities:latest
+    plugin: quay.io/arcalot/arcaflow-plugin-utilities:0.2.0
     step: uuid
     input: {}
   kubeburner:
@@ -94,7 +94,7 @@ steps:
       pod_ready_threshold: !expr $.input.kubeburner_pod_ready_threshold
       kubeconfig: !expr $.input.kubeconfig_str
   metadata:
-    plugin: quay.io/arcalot/arcaflow-plugin-metadata:latest
+    plugin: quay.io/arcalot/arcaflow-plugin-metadata:0.1.0
     input: {}
 
 output:

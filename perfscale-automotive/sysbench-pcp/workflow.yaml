@@ -90,7 +90,7 @@ input:
             type_id: string
 steps:
   uuidgen:
-    plugin: quay.io/arcalot/arcaflow-plugin-utilities:latest
+    plugin: quay.io/arcalot/arcaflow-plugin-utilities:0.2.0
     step: uuid
     input: {}
   system_config:

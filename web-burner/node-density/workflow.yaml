@@ -49,7 +49,7 @@ input:
 
 steps:
   uuidgen:
-    plugin: quay.io/arcalot/arcaflow-plugin-utilities:latest
+    plugin: quay.io/arcalot/arcaflow-plugin-utilities:0.2.0
     step: uuid
     input: {}
   web_burner:
@@ -76,7 +76,7 @@ steps:
       number_of_nodes: !expr $.input.wb_number_of_nodes
       kubeconfig: !expr $.input.kubeconfig_str
   metadata:
-    plugin: quay.io/arcalot/arcaflow-plugin-metadata:latest
+    plugin: quay.io/arcalot/arcaflow-plugin-metadata:0.1.0
     input: {}
 
 output:
