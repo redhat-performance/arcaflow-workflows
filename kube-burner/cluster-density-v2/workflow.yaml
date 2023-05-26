@@ -81,7 +81,7 @@ input:
             description: Percentage of job iterations that kube-burner will churn each round
             name: churn-percent
           type:
-            type_id: int 
+            type_id: integer
         kubeconfig_str:
           display:
             description: Openshift cluster kubeconfig file content as a string
