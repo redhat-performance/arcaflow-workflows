@@ -1,0 +1,6 @@
+sysbench_workload: sysbenchcpu
+sysbench_params:
+  threads: 1
+  time: 10
+  percentile: 99
+  cpu-max-prime: 500000

@@ -1,0 +1,19 @@
+run_id: sysbench-loop-test
+user: dblack
+# sysbench_workload: sysbenchcpu
+sysbench_tests:
+  - sysbench_params:
+      threads: 1
+      time: 10
+      percentile: 99
+      cpu-max-prime: 500000
+  - sysbench_params:
+      threads: 4
+      time: 10  
+      percentile: 99
+      cpu-max-prime: 500000
+  - sysbench_params:
+      threads: 8
+      time: 10
+      percentile: 99
+      cpu-max-prime: 500000
