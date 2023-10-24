@@ -1,5 +1,6 @@
+version: v0.1.0
 input:
-  root: RootObject
+  root: SysbenchCpuWorkflowInput
   objects:
     # PCPParams:
     #   id: PCPParams
@@ -10,8 +11,8 @@ input:
     #         name: PCP pmlogger collection interval
     #       type:
     #         type_id: integer
-    SysbenchParams:
-      id: SysbenchParams
+    SysbenchCpuInputParams:
+      id: SysbenchCpuInputParams
       properties:
         threads:
           display:
@@ -37,8 +38,8 @@ input:
             name: sysbench cpu max primes
           type:
             type_id: integer
-    RootObject:
-      id: RootObject
+    SysbenchCpuWorkflowInput:
+      id: SysbenchCpuWorkflowInput
       properties:
         # sysbench_workload:
         #   display:
@@ -54,7 +55,7 @@ input:
             name: sysbench parameters
           type:
             type_id: ref
-            id: SysbenchParams
+            id: SysbenchCpuInputParams
           required: true
 
 
@@ -66,7 +67,8 @@ steps:
   #     pmlogger_interval: !expr $.input.pmlogger_interval
   #     run_duration: !expr $.input.sysbench_runtime
   sysbench:
-    plugin: quay.io/arcalot/arcaflow-plugin-sysbench:0.5.0
+    #plugin: quay.io/arcalot/arcaflow-plugin-sysbench:0.5.0
+    plugin: quay.io/arcalot/arcaflow-plugin-sysbench:sdk-update_e1a6400
     # plugin: localhost/sysbench-test:latest
     # step: !expr $.input.sysbench_workload
     step: sysbenchcpu

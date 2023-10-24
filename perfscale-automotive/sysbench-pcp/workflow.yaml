@@ -1,8 +1,9 @@
+version: v0.1.0
 input:
-  root: RootObject
+  root: SysbenchCpuLoopWorkflowInput
   objects:
-    SysbenchParams:
-      id: SysbenchParams
+    SysbenchCpuInputParams:
+      id: SysbenchCpuInputParams
       properties:
         threads:
           display:
@@ -28,8 +29,8 @@ input:
             name: sysbench cpu max primes
           type:
             type_id: integer
-    RootObject:
-      id: RootObject
+    SysbenchCpuLoopWorkflowInput:
+      id: SysbenchCpuLoopWorkflowInput
       properties:
         run_id:
           display:
@@ -60,12 +61,12 @@ input:
             type_id: list
             items:
               type_id: object
-              id: SysbenchTests
+              id: SysbenchCpuWorkflowInput
               properties:
                 sysbench_params:
                   type:
                     type_id: ref
-                    id: SysbenchParams
+                    id: SysbenchCpuInputParams
 
 steps:
   uuidgen:
