@@ -67,9 +67,7 @@ steps:
   #     pmlogger_interval: !expr $.input.pmlogger_interval
   #     run_duration: !expr $.input.sysbench_runtime
   sysbench:
-    #plugin: quay.io/arcalot/arcaflow-plugin-sysbench:0.5.0
-    plugin: quay.io/arcalot/arcaflow-plugin-sysbench:sdk-update_e1a6400
-    # plugin: localhost/sysbench-test:latest
+    plugin: quay.io/arcalot/arcaflow-plugin-sysbench:0.6.0
     # step: !expr $.input.sysbench_workload
     step: sysbenchcpu
     input: !expr $.input.sysbench_params
