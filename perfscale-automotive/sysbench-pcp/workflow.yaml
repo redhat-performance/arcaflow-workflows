@@ -48,14 +48,6 @@ input:
             type_id: string
           default: "\"\""
           required: false
-        # sysbench_workload:
-        #   display:
-        #     description: The sysbench workload to run
-        #     name: sysbench workload
-        #   type:
-        #     type_id: string
-        #     # default: sysbenchcpu
-        #   required: true
         sysbench_tests:
           type:
             type_id: list

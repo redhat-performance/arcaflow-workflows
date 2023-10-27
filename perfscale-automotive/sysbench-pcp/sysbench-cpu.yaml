@@ -13,11 +13,6 @@ input:
             type_id: integer
           required: false
           default: 1
-        # run_duration:
-        #   type:
-        #     type_id: integer
-        #   required: false
-        #   default: 100
     SysbenchCpuInputParams:
       id: SysbenchCpuInputParams
       properties:
@@ -48,14 +43,6 @@ input:
     SysbenchCpuWorkflowInput:
       id: SysbenchCpuWorkflowInput
       properties:
-        # sysbench_workload:
-        #   display:
-        #     description: The sysbench workload to run
-        #     name: sysbench workload
-        #   type:
-        #     type_id: string
-        #     # default: sysbenchcpu
-        #   required: true
         sysbench_params:
           display:
             description: The parameters for the sysbench workload
@@ -74,16 +61,15 @@ input:
 
 steps:
   pcp:
-    plugin: localhost/pcp-test:latest
+    plugin: quay.io/arcalot/arcaflow-plugin-pcp:atpv3-implement-cancel_06289ba
     step: start-pcp
     input: !expr $.input.pcp_params
-    # run_duration: !expr $.input.sysbench_runtime
     stop_if: !expr $.steps.sysbench.outputs
   sysbench:
     plugin: quay.io/arcalot/arcaflow-plugin-sysbench:0.6.0
-    # step: !expr $.input.sysbench_workload
     step: sysbenchcpu
     input: !expr $.input.sysbench_params
+    # wait_for: !expr $.steps.pcp.running
 
 outputs:
  success:
