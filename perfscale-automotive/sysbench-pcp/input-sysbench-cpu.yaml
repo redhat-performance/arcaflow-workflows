@@ -4,3 +4,5 @@ sysbench_params:
   time: 10
   percentile: 99
   cpu-max-prime: 500000
+pcp_params:
+  pmlogger_interval: 1

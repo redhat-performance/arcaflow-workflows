@@ -2,15 +2,22 @@ version: v0.1.0
 input:
   root: SysbenchCpuWorkflowInput
   objects:
-    # PCPParams:
-    #   id: PCPParams
-    #   properties:
-    #     pmlogger_interval:
-    #       display:
-    #         description: The logger collection interval for PCP pmlogger
-    #         name: PCP pmlogger collection interval
-    #       type:
-    #         type_id: integer
+    PcpInputParams:
+      id: PcpInputParams
+      properties:
+        pmlogger_interval:
+          display:
+            description: The logger collection interval for PCP pmlogger
+            name: PCP pmlogger collection interval
+          type:
+            type_id: integer
+          required: false
+          default: 1
+        # run_duration:
+        #   type:
+        #     type_id: integer
+        #   required: false
+        #   default: 100
     SysbenchCpuInputParams:
       id: SysbenchCpuInputParams
       properties:
@@ -57,15 +64,21 @@ input:
             type_id: ref
             id: SysbenchCpuInputParams
           required: true
-
+        pcp_params:
+          display:
+            description: The parameters for the PCP workload
+            name: PCP parameters
+          type:
+            type_id: ref
+            id: PcpInputParams
 
 steps:
-  # pcp:
-  #   plugin: quay.io/arcalot/arcaflow-plugin-pcp:0.3.0
-  #   step: start-pcp
-  #   input:
-  #     pmlogger_interval: !expr $.input.pmlogger_interval
-  #     run_duration: !expr $.input.sysbench_runtime
+  pcp:
+    plugin: localhost/pcp-test:latest
+    step: start-pcp
+    input: !expr $.input.pcp_params
+    # run_duration: !expr $.input.sysbench_runtime
+    stop_if: !expr $.steps.sysbench.outputs
   sysbench:
     plugin: quay.io/arcalot/arcaflow-plugin-sysbench:0.6.0
     # step: !expr $.input.sysbench_workload
@@ -74,5 +87,5 @@ steps:
 
 outputs:
  success:
-  #  pcp: !expr $.steps.pcp.outputs.success
+   pcp: !expr $.steps.pcp.outputs.success
    sysbench: !expr $.steps.sysbench.outputs.success
