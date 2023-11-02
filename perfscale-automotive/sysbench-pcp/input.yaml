@@ -7,13 +7,19 @@ sysbench_tests:
       time: 10
       percentile: 99
       cpu-max-prime: 500000
+    pcp_params:
+      pmlogger_interval: 1
   - sysbench_params:
       threads: 4
       time: 10  
       percentile: 99
       cpu-max-prime: 500000
+    pcp_params:
+      pmlogger_interval: 1
   - sysbench_params:
       threads: 8
       time: 10
       percentile: 99
       cpu-max-prime: 500000
+    pcp_params:
+      pmlogger_interval: 1

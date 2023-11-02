@@ -29,6 +29,17 @@ input:
             name: sysbench cpu max primes
           type:
             type_id: integer
+    PcpInputParams:
+      id: PcpInputParams
+      properties:
+        pmlogger_interval:
+          display:
+            description: The logger collection interval for PCP pmlogger
+            name: PCP pmlogger collection interval
+          type:
+            type_id: integer
+          required: false
+          default: 1
     SysbenchCpuLoopWorkflowInput:
       id: SysbenchCpuLoopWorkflowInput
       properties:
@@ -59,6 +70,10 @@ input:
                   type:
                     type_id: ref
                     id: SysbenchCpuInputParams
+                pcp_params:
+                  type:
+                    type_id: ref
+                    id: PcpInputParams
 
 steps:
   uuidgen:

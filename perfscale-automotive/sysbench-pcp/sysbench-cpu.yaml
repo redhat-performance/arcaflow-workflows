@@ -61,7 +61,8 @@ input:
 
 steps:
   pcp:
-    plugin: quay.io/arcalot/arcaflow-plugin-pcp:atpv3-implement-cancel_06289ba
+    plugin: quay.io/arcalot/arcaflow-plugin-pcp:atpv3-implement-cancel_4191b26
+    # plugin: localhost/pcp-test:latest
     step: start-pcp
     input: !expr $.input.pcp_params
     stop_if: !expr $.steps.sysbench.outputs
@@ -73,5 +74,5 @@ steps:
 
 outputs:
  success:
-   pcp: !expr $.steps.pcp.outputs.success
-   sysbench: !expr $.steps.sysbench.outputs.success
+    pcp: !expr $.steps.pcp.outputs.success
+    sysbench: !expr $.steps.sysbench.outputs.success
