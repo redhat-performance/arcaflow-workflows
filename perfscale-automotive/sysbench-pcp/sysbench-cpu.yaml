@@ -61,7 +61,7 @@ input:
 
 steps:
   pcp:
-    plugin: quay.io/arcalot/arcaflow-plugin-pcp:atpv3-implement-cancel_4191b26
+    plugin: quay.io/arcalot/arcaflow-plugin-pcp:atpv3-implement-cancel_b0d370b
     # plugin: localhost/pcp-test:latest
     step: start-pcp
     input: !expr $.input.pcp_params
