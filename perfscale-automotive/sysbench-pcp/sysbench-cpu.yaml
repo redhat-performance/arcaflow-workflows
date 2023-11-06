@@ -69,7 +69,8 @@ steps:
     plugin: quay.io/arcalot/arcaflow-plugin-sysbench:0.6.0
     step: sysbenchcpu
     input: !expr $.input.sysbench_params
-    # wait_for: !expr $.steps.pcp.running
+    # Note: The wait_for feature is pending an update to the engine
+    # wait_for: !expr $.steps.pcp.starting.started
 
 outputs:
  success:

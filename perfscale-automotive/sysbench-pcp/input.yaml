@@ -1,6 +1,5 @@
 run_id: sysbench-loop-test
-user: dblack
-# sysbench_workload: sysbenchcpu
+user: foobar
 sysbench_tests:
   - sysbench_params:
       threads: 1
