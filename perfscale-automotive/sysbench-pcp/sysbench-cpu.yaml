@@ -10,9 +10,9 @@ input:
             description: The logger collection interval for PCP pmlogger
             name: PCP pmlogger collection interval
           type:
-            type_id: integer
+            type_id: float
           required: false
-          default: 1
+          default: 1.0
     SysbenchCpuInputParams:
       id: SysbenchCpuInputParams
       properties:
@@ -61,7 +61,7 @@ input:
 
 steps:
   pcp:
-    plugin: quay.io/arcalot/arcaflow-plugin-pcp:0.4.0
+    plugin: quay.io/arcalot/arcaflow-plugin-pcp:flexible-redesign_029b8bb
     step: start-pcp
     input: !expr $.input.pcp_params
     stop_if: !expr $.steps.sysbench.outputs

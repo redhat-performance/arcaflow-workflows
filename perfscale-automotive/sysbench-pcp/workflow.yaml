@@ -37,9 +37,9 @@ input:
             description: The logger collection interval for PCP pmlogger
             name: PCP pmlogger collection interval
           type:
-            type_id: integer
+            type_id: float
           required: false
-          default: 1
+          default: 1.0
     SysbenchCpuLoopWorkflowInput:
       id: SysbenchCpuLoopWorkflowInput
       properties:
