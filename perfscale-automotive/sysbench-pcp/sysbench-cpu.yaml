@@ -1,4 +1,4 @@
-version: v0.1.0
+version: v0.2.0
 input:
   root: SysbenchCpuWorkflowInput
   objects:
@@ -61,16 +61,19 @@ input:
 
 steps:
   pcp:
-    plugin: quay.io/arcalot/arcaflow-plugin-pcp:flexible-redesign_029b8bb
+    plugin:
+      deployment_type: image
+      src: quay.io/arcalot/arcaflow-plugin-pcp:flexible-redesign_029b8bb
     step: start-pcp
     input: !expr $.input.pcp_params
     stop_if: !expr $.steps.sysbench.outputs
   sysbench:
-    plugin: quay.io/arcalot/arcaflow-plugin-sysbench:0.6.0
+    plugin:
+      deployment_type: image
+      src: quay.io/arcalot/arcaflow-plugin-sysbench:0.6.0
     step: sysbenchcpu
     input: !expr $.input.sysbench_params
-    # Note: The wait_for feature is pending an update to the engine
-    # wait_for: !expr $.steps.pcp.starting.started
+    wait_for: !expr $.steps.pcp.starting.started
 
 outputs:
  success:
