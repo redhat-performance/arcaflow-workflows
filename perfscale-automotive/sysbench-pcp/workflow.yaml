@@ -1,6 +1,6 @@
 version: v0.2.0
 input:
-  root: SysbenchCpuLoopWorkflowInput
+  root: SysbenchLoopWorkflowInput
   objects:
     SysbenchCpuInputParams:
       id: SysbenchCpuInputParams
@@ -29,6 +29,33 @@ input:
             name: sysbench cpu max primes
           type:
             type_id: integer
+    SysbenchMemoryInputParams:
+      id: SysbenchMemoryInputParams
+      properties:
+        threads:
+          display:
+            description: The number of threads sysbench will run
+            name: sysbench threads
+          type:
+            type_id: integer
+        time:
+          display:
+            description: The maximum runtime in seconds for the sysbench tests
+            name: sysbench max runtime seconds
+          type:
+            type_id: integer
+        percentile:
+          display:
+            description: The percentile to report latency metrics
+            name: sysbench latency percentile
+          type:
+            type_id: integer
+        memory-total-size:
+          display:
+            name: Total size of data to transfer in GiB
+          required: false
+          type:
+            type_id: string
     PcpInputParams:
       id: PcpInputParams
       properties:
@@ -40,8 +67,8 @@ input:
             type_id: float
           required: false
           default: 1.0
-    SysbenchCpuLoopWorkflowInput:
-      id: SysbenchCpuLoopWorkflowInput
+    SysbenchLoopWorkflowInput:
+      id: SysbenchLoopWorkflowInput
       properties:
         run_id:
           display:
@@ -59,7 +86,7 @@ input:
             type_id: string
           default: "\"\""
           required: false
-        sysbench_tests:
+        sysbench_cpu_tests:
           type:
             type_id: list
             items:
@@ -70,6 +97,21 @@ input:
                   type:
                     type_id: ref
                     id: SysbenchCpuInputParams
+                pcp_params:
+                  type:
+                    type_id: ref
+                    id: PcpInputParams
+        sysbench_memory_tests:
+          type:
+            type_id: list
+            items:
+              type_id: object
+              id: SysbenchMemoryWorkflowInput
+              properties:
+                sysbench_params:
+                  type:
+                    type_id: ref
+                    id: SysbenchMemoryInputParams
                 pcp_params:
                   type:
                     type_id: ref
@@ -87,9 +129,9 @@ steps:
       deployment_type: image
       src: quay.io/arcalot/arcaflow-plugin-metadata:0.4.0
     input: {}
-  sysbench_loop:
+  sysbench_cpu_loop:
     kind: foreach
-    items: !expr $.input.sysbench_tests
+    items: !expr $.input.sysbench_cpu_tests
     workflow: sysbench-cpu.yaml
     parallelism: 1
 
@@ -99,4 +141,4 @@ outputs:
     run_id: !expr $.input.run_id
     user: !expr $.input.user
     system_config: !expr $.steps.system_config.outputs.success
-    sysbench: !expr $.steps.sysbench_loop.outputs.success
+    sysbench_cpu: !expr $.steps.sysbench_cpu_loop.outputs.success

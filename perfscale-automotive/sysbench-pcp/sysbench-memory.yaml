@@ -1,6 +1,6 @@
 version: v0.2.0
 input:
-  root: SysbenchCpuWorkflowInput
+  root: SysbenchMemoryWorkflowInput
   objects:
     PcpInputParams:
       id: PcpInputParams
@@ -13,8 +13,8 @@ input:
             type_id: float
           required: false
           default: 1.0
-    SysbenchCpuInputParams:
-      id: SysbenchCpuInputParams
+    SysbenchMemoryInputParams:
+      id: SysbenchMemoryInputParams
       properties:
         threads:
           display:
@@ -34,14 +34,14 @@ input:
             name: sysbench latency percentile
           type:
             type_id: integer
-        cpu-max-prime:
+        memory-total-size:
           display:
-            description: The upper limit of the number of prime numbers generated
-            name: sysbench cpu max primes
+            name: Total size of data to transfer in GiB
+          required: false
           type:
-            type_id: integer
-    SysbenchCpuWorkflowInput:
-      id: SysbenchCpuWorkflowInput
+            type_id: string
+    SysbenchMemoryWorkflowInput:
+      id: SysbenchMemoryWorkflowInput
       properties:
         sysbench_params:
           display:
@@ -49,7 +49,7 @@ input:
             name: sysbench parameters
           type:
             type_id: ref
-            id: SysbenchCpuInputParams
+            id: SysbenchMemoryInputParams
           required: true
         pcp_params:
           display:
@@ -66,16 +66,8 @@ steps:
       src: quay.io/arcalot/arcaflow-plugin-pcp:flexible-redesign_7cc9ac4
     step: start-pcp
     input: !expr $.input.pcp_params
-    stop_if: !expr $.steps.sysbench_cpu.outputs
-  sysbench_cpu:
-    plugin:
-      deployment_type: image
-      src: quay.io/arcalot/arcaflow-plugin-sysbench:0.6.0
-    step: sysbenchcpu
-    input: !expr $.input.sysbench_params
-    wait_for: !expr $.steps.pcp.starting.started
+    stop_if: !expr $.steps.sysbench_memory.outputs
 
 outputs:
  success:
     pcp: !expr $.steps.pcp.outputs.success
-    sysbench-cpu: !expr $.steps.sysbench_cpu.outputs.success
