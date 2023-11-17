@@ -56,6 +56,32 @@ input:
           required: false
           type:
             type_id: string
+        memory-access-mode:
+          display:
+            description: The access mode into memory  seq or rnd
+            name: memory access mode
+          required: false
+          type:
+            type_id: enum_string
+            values:
+              rnd:
+                name: RND
+              seq:
+                name: SEQ
+        memory-oper:
+          display:
+            description: The memory operation  read or write
+            name: memory operation
+          required: false
+          type:
+            type_id: enum_string
+            values:
+              none:
+                name: NONE
+              read:
+                name: READ
+              write:
+                name: WRITE
     PcpInputParams:
       id: PcpInputParams
       properties:
@@ -134,6 +160,11 @@ steps:
     items: !expr $.input.sysbench_cpu_tests
     workflow: sysbench-cpu.yaml
     parallelism: 1
+  sysbench_memory_loop:
+    kind: foreach
+    items: !expr $.input.sysbench_memory_tests
+    workflow: sysbench-memory.yaml
+    parallelism: 1
 
 outputs:
   success:
@@ -142,3 +173,4 @@ outputs:
     user: !expr $.input.user
     system_config: !expr $.steps.system_config.outputs.success
     sysbench_cpu: !expr $.steps.sysbench_cpu_loop.outputs.success
+    sysbench_memory: !expr $.steps.sysbench_memory_loop.outputs.success

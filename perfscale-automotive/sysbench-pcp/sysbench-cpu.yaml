@@ -63,7 +63,7 @@ steps:
   pcp:
     plugin:
       deployment_type: image
-      src: quay.io/arcalot/arcaflow-plugin-pcp:flexible-redesign_7cc9ac4
+      src: quay.io/arcalot/arcaflow-plugin-pcp:0.5.0
     step: start-pcp
     input: !expr $.input.pcp_params
     stop_if: !expr $.steps.sysbench_cpu.outputs
@@ -78,4 +78,4 @@ steps:
 outputs:
  success:
     pcp: !expr $.steps.pcp.outputs.success
-    sysbench-cpu: !expr $.steps.sysbench_cpu.outputs.success
+    sysbench_cpu: !expr $.steps.sysbench_cpu.outputs.success
