@@ -1,0 +1,81 @@
+version: v0.2.0
+input:
+  root: SysbenchCpuWorkflowInput
+  objects:
+    PcpInputParams:
+      id: PcpInputParams
+      properties:
+        pmlogger_interval:
+          display:
+            description: The logger collection interval for PCP pmlogger
+            name: PCP pmlogger collection interval
+          type:
+            type_id: float
+          required: false
+          default: 1.0
+    SysbenchCpuInputParams:
+      id: SysbenchCpuInputParams
+      properties:
+        threads:
+          display:
+            description: The number of threads sysbench will run
+            name: sysbench threads
+          type:
+            type_id: integer
+        time:
+          display:
+            description: The maximum runtime in seconds for the sysbench tests
+            name: sysbench max runtime seconds
+          type:
+            type_id: integer
+        percentile:
+          display:
+            description: The percentile to report latency metrics
+            name: sysbench latency percentile
+          type:
+            type_id: integer
+        cpu-max-prime:
+          display:
+            description: The upper limit of the number of prime numbers generated
+            name: sysbench cpu max primes
+          type:
+            type_id: integer
+    SysbenchCpuWorkflowInput:
+      id: SysbenchCpuWorkflowInput
+      properties:
+        sysbench_params:
+          display:
+            description: The parameters for the sysbench workload
+            name: sysbench parameters
+          type:
+            type_id: ref
+            id: SysbenchCpuInputParams
+          required: true
+        pcp_params:
+          display:
+            description: The parameters for the PCP workload
+            name: PCP parameters
+          type:
+            type_id: ref
+            id: PcpInputParams
+
+steps:
+  pcp:
+    plugin:
+      deployment_type: image
+      src: quay.io/arcalot/arcaflow-plugin-pcp:0.5.0
+    step: start-pcp
+    input: !expr $.input.pcp_params
+    stop_if: !expr $.steps.sysbench_cpu.outputs
+  sysbench_cpu:
+    plugin:
+      deployment_type: image
+      src: quay.io/arcalot/arcaflow-plugin-sysbench:0.6.0
+    step: sysbenchcpu
+    input: !expr $.input.sysbench_params
+    wait_for: !expr $.steps.pcp.starting.started
+
+outputs:
+ success:
+    pcp: !expr $.steps.pcp.outputs.success
+    sysbench_cpu: !expr $.steps.sysbench_cpu.outputs.success

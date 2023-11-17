@@ -1,0 +1,7 @@
+sysbench_params:
+  threads: 1
+  time: 10
+  percentile: 99
+  memory-total-size: "100G"
+pcp_params:
+  pmlogger_interval: 1.0
