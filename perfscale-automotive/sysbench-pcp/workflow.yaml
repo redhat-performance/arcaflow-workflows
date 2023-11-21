@@ -249,41 +249,48 @@ steps:
     items: !expr $.input.sysbench_cpu_tests
     workflow: sysbench-cpu.yaml
     parallelism: 1
+    # Note: Engine feature enhancement pending to allow wait_for in a foreach
+    # https://github.com/arcalot/arcaflow-engine/issues/125
+    # wait_for: !expr $.steps.start_timestamp.outputs.success
   sysbench_memory_loop:
     kind: foreach
     items: !expr $.input.sysbench_memory_tests
     workflow: sysbench-memory.yaml
     parallelism: 1
+    # Note: Engine feature enhancement pending to allow wait_for in a foreach
+    # https://github.com/arcalot/arcaflow-engine/issues/125
+    # wait_for: !expr $.steps.sysbench_cpu_loop.outputs.success
   end_timestamp:
     plugin:
       deployment_type: image
       src: quay.io/arcalot/arcaflow-plugin-utilities:0.5.0
     step: timestamp
     input: {}
-  horreum_upload:
-    plugin:
-      deployment_type: image
-      src: quay.io/arcalot/arcaflow-plugin-horreum-client:initial-design_ad15ed3
-    input:
-      horreum_url: !expr $.input.horreum_params.horreum_url
-      horreum_keycloak_url: !expr $.input.horreum_params.horreum_keycloak_url
-      horreum_username: !expr $.input.horreum_params.horreum_username
-      horreum_password: !expr $.input.horreum_params.horreum_password
-      test_name: !expr $.input.horreum_params.test_name
-      test_owner: !expr $.input.horreum_params.test_owner
-      test_access_rights: !expr $.input.horreum_params.test_access_rights
-      test_start_time: "$.start_time"
-      test_stop_time: "$.end_time"
-      data_object:
-        uuid: !expr $.steps.uuidgen.outputs.success.uuid
-        run_id: !expr $.input.run_id
-        user: !expr $.input.user
-        description: !expr $.input.description
-        start_time: !expr $.steps.start_timestamp.outputs.success.timestamp
-        end_time: !expr $.steps.start_timestamp.outputs.success.timestamp
-        system_config: !expr $.steps.system_config.outputs.success
-        sysbench_cpu: !expr $.steps.sysbench_cpu_loop.outputs.success
-        sysbench_memory: !expr $.steps.sysbench_memory_loop.outputs.success
+    wait_for: !expr $.steps.sysbench_memory_loop.outputs.success
+  # horreum_upload:
+  #   plugin:
+  #     deployment_type: image
+  #     src: quay.io/arcalot/arcaflow-plugin-horreum-client:initial-design_ad15ed3
+  #   input:
+  #     horreum_url: !expr $.input.horreum_params.horreum_url
+  #     horreum_keycloak_url: !expr $.input.horreum_params.horreum_keycloak_url
+  #     horreum_username: !expr $.input.horreum_params.horreum_username
+  #     horreum_password: !expr $.input.horreum_params.horreum_password
+  #     test_name: !expr $.input.horreum_params.test_name
+  #     test_owner: !expr $.input.horreum_params.test_owner
+  #     test_access_rights: !expr $.input.horreum_params.test_access_rights
+  #     test_start_time: "$.start_time"
+  #     test_stop_time: "$.end_time"
+  #     data_object:
+  #       uuid: !expr $.steps.uuidgen.outputs.success.uuid
+  #       run_id: !expr $.input.run_id
+  #       user: !expr $.input.user
+  #       description: !expr $.input.description
+  #       start_time: !expr $.steps.start_timestamp.outputs.success.timestamp
+  #       end_time: !expr $.steps.start_timestamp.outputs.success.timestamp
+  #       system_config: !expr $.steps.system_config.outputs.success
+  #       sysbench_cpu: !expr $.steps.sysbench_cpu_loop.outputs.success
+  #       sysbench_memory: !expr $.steps.sysbench_memory_loop.outputs.success
 
 outputs:
   success:
@@ -295,4 +302,4 @@ outputs:
     system_config: !expr $.steps.system_config.outputs.success
     sysbench_cpu: !expr $.steps.sysbench_cpu_loop.outputs.success
     sysbench_memory: !expr $.steps.sysbench_memory_loop.outputs.success
-    horreum_test_id: !expr $.steps.horreum_upload.outputs.success.horreum_test_id
+    # horreum_test_id: !expr $.steps.horreum_upload.outputs.success.horreum_test_id
