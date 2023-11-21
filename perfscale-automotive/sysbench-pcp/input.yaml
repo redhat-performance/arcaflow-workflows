@@ -1,5 +1,14 @@
 run_id: sysbench-loop-test
 user: foobar
+description: this is the description of the workflow being run
+horreum_params:
+  horreum_url: https://my.horreum.server.url
+  horreum_keycloak_url: https://my.horreum.keycloak.server.url
+  horreum_username: my-horreum-username
+  horreum_password: my-horreum-password
+  test_name: my-test-name
+  test_owner: my-test-owner
+  test_access_rights: PUBLIC
 sysbench_cpu_tests:
   - sysbench_params:
       threads: 1
@@ -27,6 +36,9 @@ sysbench_memory_tests:
       threads: 1
       time: 10
       percentile: 99
+      memory-block-size: "1K"
+      memory-access-mode: "rand"
+      memory-oper: "read"
       memory-total-size: "100G"
     pcp_params:
       pmlogger_interval: 1.0
@@ -34,6 +46,9 @@ sysbench_memory_tests:
       threads: 4
       time: 10  
       percentile: 99
+      memory-block-size: "1K"
+      memory-access-mode: "rand"
+      memory-oper: "read"
       memory-total-size: "100G"
     pcp_params:
       pmlogger_interval: 1.0
@@ -41,6 +56,9 @@ sysbench_memory_tests:
       threads: 8
       time: 10
       percentile: 99
+      memory-block-size: "1K"
+      memory-access-mode: "rand"
+      memory-oper: "read"
       memory-total-size: "100G"
     pcp_params:
       pmlogger_interval: 1.0

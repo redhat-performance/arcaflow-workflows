@@ -34,6 +34,12 @@ input:
             name: sysbench latency percentile
           type:
             type_id: integer
+        memory-block-size:
+          display:
+            description: The block size of data to transfer in KiB
+            name: memory block size
+          type:
+            type_id: string
         memory-total-size:
           display:
             name: Total size of data to transfer in GiB
