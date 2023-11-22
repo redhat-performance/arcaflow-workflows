@@ -95,7 +95,7 @@ steps:
   pcp:
     plugin:
       deployment_type: image
-      src: quay.io/arcalot/arcaflow-plugin-pcp:0.5.1
+      src: quay.io/arcalot/arcaflow-plugin-pcp:0.5.2
     step: start-pcp
     input: !expr $.input.pcp_params
     stop_if: !expr $.steps.sysbench_memory.outputs
