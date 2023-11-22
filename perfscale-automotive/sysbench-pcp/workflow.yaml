@@ -296,6 +296,6 @@ outputs:
     start_time: !expr $.steps.start_timestamp.outputs.success.timestamp
     end_time: !expr $.steps.start_timestamp.outputs.success.timestamp
     system_config: !expr $.steps.system_config.outputs.success
-    sysbench_cpu: !expr $.steps.sysbench_cpu_loop.outputs.success
-    sysbench_memory: !expr $.steps.sysbench_memory_loop.outputs.success
+    sysbench_cpu_loop: !expr $.steps.sysbench_cpu_loop.outputs.success
+    sysbench_memory_loop: !expr $.steps.sysbench_memory_loop.outputs.success
     # horreum_test_id: !expr $.steps.horreum_upload.outputs.success.horreum_test_id
