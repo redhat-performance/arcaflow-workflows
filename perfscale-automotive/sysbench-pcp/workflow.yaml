@@ -230,7 +230,7 @@ steps:
   uuidgen:
     plugin:
       deployment_type: image
-      src: quay.io/arcalot/arcaflow-plugin-utilities:0.5.0
+      src: quay.io/arcalot/arcaflow-plugin-utilities:0.5.1
     step: uuid
     input: {}
   system_config:
@@ -241,7 +241,7 @@ steps:
   start_timestamp:
     plugin:
       deployment_type: image
-      src: quay.io/arcalot/arcaflow-plugin-utilities:0.5.0
+      src: quay.io/arcalot/arcaflow-plugin-utilities:0.5.1
     step: timestamp
     input: {}
   sysbench_cpu_loop:
@@ -259,14 +259,14 @@ steps:
   end_timestamp:
     plugin:
       deployment_type: image
-      src: quay.io/arcalot/arcaflow-plugin-utilities:0.5.0
+      src: quay.io/arcalot/arcaflow-plugin-utilities:0.5.1
     step: timestamp
     input: {}
     wait_for: !expr $.steps.sysbench_memory_loop.outputs.success
   # horreum_upload:
   #   plugin:
   #     deployment_type: image
-  #     src: quay.io/arcalot/arcaflow-plugin-horreum-client:initial-design_ad15ed3
+  #     src: quay.io/arcalot/arcaflow-plugin-horreum-client:initial-design_6b34e5a
   #   input:
   #     horreum_url: !expr $.input.horreum_params.horreum_url
   #     horreum_keycloak_url: !expr $.input.horreum_params.horreum_keycloak_url
@@ -278,6 +278,7 @@ steps:
   #     test_start_time: "$.start_time"
   #     test_stop_time: "$.end_time"
   #     data_object:
+  #       $schema: urn:rhivos-arcaflow-sysbench-pcp:01
   #       uuid: !expr $.steps.uuidgen.outputs.success.uuid
   #       run_id: !expr $.input.run_id
   #       user: !expr $.input.user
@@ -285,8 +286,8 @@ steps:
   #       start_time: !expr $.steps.start_timestamp.outputs.success.timestamp
   #       end_time: !expr $.steps.start_timestamp.outputs.success.timestamp
   #       system_config: !expr $.steps.system_config.outputs.success
-  #       sysbench_cpu: !expr $.steps.sysbench_cpu_loop.outputs.success
-  #       sysbench_memory: !expr $.steps.sysbench_memory_loop.outputs.success
+  #       sysbench_cpu_loop: !expr $.steps.sysbench_cpu_loop.outputs.success
+  #       sysbench_memory_loop: !expr $.steps.sysbench_memory_loop.outputs.success
 
 outputs:
   success:
@@ -298,4 +299,4 @@ outputs:
     system_config: !expr $.steps.system_config.outputs.success
     sysbench_cpu_loop: !expr $.steps.sysbench_cpu_loop.outputs.success
     sysbench_memory_loop: !expr $.steps.sysbench_memory_loop.outputs.success
-    # horreum_test_id: !expr $.steps.horreum_upload.outputs.success.horreum_test_id
+    # horreum_run_id: !expr $.steps.horreum_upload.outputs.success.horreum_run_id
