@@ -284,7 +284,7 @@ steps:
   #       user: !expr $.input.user
   #       description: !expr $.input.description
   #       start_time: !expr $.steps.start_timestamp.outputs.success.timestamp
-  #       end_time: !expr $.steps.start_timestamp.outputs.success.timestamp
+  #       end_time: !expr $.steps.end_timestamp.outputs.success.timestamp
   #       system_config: !expr $.steps.system_config.outputs.success
   #       sysbench_cpu_loop: !expr $.steps.sysbench_cpu_loop.outputs.success
   #       sysbench_memory_loop: !expr $.steps.sysbench_memory_loop.outputs.success
@@ -295,7 +295,7 @@ outputs:
     run_id: !expr $.input.run_id
     user: !expr $.input.user
     start_time: !expr $.steps.start_timestamp.outputs.success.timestamp
-    end_time: !expr $.steps.start_timestamp.outputs.success.timestamp
+    end_time: !expr $.steps.end_timestamp.outputs.success.timestamp
     system_config: !expr $.steps.system_config.outputs.success
     sysbench_cpu_loop: !expr $.steps.sysbench_cpu_loop.outputs.success
     sysbench_memory_loop: !expr $.steps.sysbench_memory_loop.outputs.success
